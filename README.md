@@ -11,7 +11,7 @@ In `urls.py` add the desired route
 
 urlpatterns = [
     ...
-    path('sitemonitor', include('django_sitemonitor.urls')),
+    path('sitemonitor', include('sitemonitor.urls')),
 ]
 ```
 
