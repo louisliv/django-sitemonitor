@@ -1,0 +1,12 @@
+/node_modules
+*.pyc
+server/*__pycache__
+client/node_modules/
+client/build/
+client/dist/
+.vscode
+server/pip-selfcheck.json
+*.retry
+/client/package-lock.json
+*package-lock.json
+*.sqlite3

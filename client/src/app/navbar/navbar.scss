@@ -1,0 +1,91 @@
+.nav-bar {
+    background-color: #15191c;
+    height: 100%;
+    padding: 0px;
+}
+
+.nav-bar.navbar {
+    display: flex;
+
+    .btn.navTabActive {
+        border: 0px;
+        color: #339af0;
+        box-shadow: none;
+        border-radius: 0px;
+    }
+
+    .btn:not(.navTabActive) {
+        border: 0px;
+        color: white;
+        background: transparent;
+
+        &:hover {
+            background: #5a6268;
+            border-radius: 0px;
+        }
+
+        &:active {
+            box-shadow: none;
+        }
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .nav-bar {
+        width: 100%;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        flex-direction: row;
+
+        .user-btns {
+            height: 100%;
+    
+            .btn {
+                height: 100%;
+            }
+        }
+    }
+
+    .nav-bar .nav {
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 768px) {
+    .nav-bar {
+        position: fixed;
+        padding-left: 0px;
+        padding-right: 0px;
+        box-shadow: 1px 1px 3px #343A40;
+        flex-direction: column;
+
+        .user-btns {
+            width: 100%;
+    
+            .btn {
+                width: 100%;
+            }
+        }
+    }
+
+    .nav-bar .nav {
+        flex-direction: column;
+    }
+}
+
+.nav-bar .btn {
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    &:active {
+        outline: none;
+        box-shadow: none;
+    }
+}
