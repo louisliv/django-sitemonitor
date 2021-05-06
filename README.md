@@ -1,4 +1,4 @@
-# sitemonitor
+# django-sitemonitor
 Web-based system monitor for Django
 
 ##### Build Frontend
