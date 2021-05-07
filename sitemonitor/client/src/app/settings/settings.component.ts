@@ -7,6 +7,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SettingEditModal } from "./_components/edit/edit-modal.component";
 import * as _ from "lodash";
 import { ToastService } from 'src/app/services/toast.service';
+import {NgbAccordionConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-settings',
@@ -27,8 +28,12 @@ export class SettingsComponent implements OnInit {
   constructor(
     private settingsApi: SettingsApi,
     private modalService: NgbModal,
-    private toastService: ToastService
-  ) { }
+    private toastService: ToastService,
+    private accordianConfig: NgbAccordionConfig
+  ) { 
+    accordianConfig.closeOthers= true;
+    accordianConfig.type= 'primary';
+  }
 
   ngOnInit(): void {
     this.settingsApi.getAll().subscribe({
@@ -47,6 +52,7 @@ export class SettingsComponent implements OnInit {
 
   openAddModal() {
     var setting = new Setting();
+    console.log('here')
     this.currentModal = this.modalService.open(SettingEditModal)
     
     this.currentModal.componentInstance.setting = setting;

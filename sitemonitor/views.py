@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from sitemonitor.serializers import (SystemSettingSerializer,
     UserSerializer)
 from sitemonitor.config import monitor, sys_info
+from sitemonitor.utils.exceptions import TempKeyNotFoundException
 from django.shortcuts import render
 from django.contrib import auth
 from django.conf import settings
@@ -64,7 +65,13 @@ class MonitorView(viewsets.GenericViewSet):
     permission_classes = [permissions.IsAdminUser]
     
     def list(self, request):
-        return Response(monitor.get_data())
+        try:
+            return Response(monitor.get_data())
+        except TempKeyNotFoundException as e:
+            return Response({
+                'status': 'Temperature key not found',
+                'message': e.message
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SystemInfoView(viewsets.GenericViewSet):

@@ -25,7 +25,7 @@ export class TempChartComponent implements OnInit {
   constructor() { }
 
   public lineChartData: ChartDataSets[] = [
-    { data: [], label: 'Current Temperature' },
+    { data: [], label: 'Temperature' },
     { data: [], label: 'Critical Heat' },
   ];
   public lineChartLabels: Label[] = [];
@@ -42,7 +42,7 @@ export class TempChartComponent implements OnInit {
   }
 
   setLabel() {
-    this.lineChartOptions.title.text = `${this._label} Temp`;
+    this.lineChartOptions.title.text = `${this._label} Temperature`;
   }
 
   changeData() {

@@ -1,6 +1,7 @@
 import random, json, subprocess, psutil
 from datetime import datetime
 from sitemonitor.models import SystemSetting
+from sitemonitor.utils.exceptions import TempKeyNotFoundException
 
 KEY_VALUES = [
     'cpu_usage',
@@ -46,27 +47,36 @@ class Monitor:
 
     def get_cpu_temps(self):
         temp_key_setting = SystemSetting.objects.get(key="cpu_temp_key")
-        temps = psutil.sensors_temperatures()[temp_key_setting.value]
+        temps = psutil.sensors_temperatures().get(temp_key_setting.value, None)
 
-        for temp in temps:
-            key = temp[0]
-            current_temp = {
-                'temp': temp[1], 
-                'time': datetime.now().strftime("%H:%M:%S")
-            }
-            high_temp = temp[3]
+        if (not temps):
+            err_string = (
+                f"The {temp_key_setting.value} CPU "
+                f"temperature sensor could not be found. "
+                f"Ensure the {temp_key_setting.label} value "
+                f"has been set correctly."
+            )
+            raise TempKeyNotFoundException(err_string)
 
-            if (self.data['cpu_temps'].get(key, None) and 
-                self.data['cpu_temps'][key].get('data', None)):
-                current_list = self.data['cpu_temps'][key]['data']
-                new_list = current_list[-19:]
-                new_list.append(current_temp)
-                self.data['cpu_temps'][key]['data'] = new_list
-            else:
-                self.data['cpu_temps'][key] = {}
-                self.data['cpu_temps'][key]['data'] = [current_temp]
-                self.data['cpu_temps'][key]['high_temp'] = high_temp
-                self.data['cpu_temps'][key]['label'] = key
+        temp = temps[0]
+        key = 'CPU'
+        current_temp = {
+            'temp': temp[1], 
+            'time': datetime.now().strftime("%H:%M:%S")
+        }
+        high_temp = temp[3]
+
+        if (self.data['cpu_temps'].get(key, None) and 
+            self.data['cpu_temps'][key].get('data', None)):
+            current_list = self.data['cpu_temps'][key]['data']
+            new_list = current_list[-19:]
+            new_list.append(current_temp)
+            self.data['cpu_temps'][key]['data'] = new_list
+        else:
+            self.data['cpu_temps'][key] = {}
+            self.data['cpu_temps'][key]['data'] = [current_temp]
+            self.data['cpu_temps'][key]['high_temp'] = high_temp
+            self.data['cpu_temps'][key]['label'] = key
 
     def get_data(self):
         self.cpu_usage()

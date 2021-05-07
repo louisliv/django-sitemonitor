@@ -32,8 +32,9 @@ export class HomeComponent implements OnInit {
         this.loadError = null;
       },
       error: err => {
+        console.log(err)
         this.isLoaded = false;
-        this.loadError = err.statusText;
+        this.loadError = `${err.statusText}: ${err.error.message}`;
       }
     })
   }

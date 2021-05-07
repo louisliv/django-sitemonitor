@@ -12,11 +12,11 @@
 
 <div class="row" *ngIf="isLoaded">
     <div class="col-12">
-        <div class="card">
+        <div class="text-right margin-bottom-small">
+            <button class="btn btn-success" (click)="openAddModal()">Add</button>
+        </div>
+        <div class="card d-md-block d-none margin-bottom-small">
             <div class="card-body">
-                <div class="text-right margin-bottom-small">
-                    <button class="btn btn-success" (click)="openAddModal()">Add</button>
-                </div>
                 <table class="table">
                     <thead>
                         <tr>
@@ -46,14 +46,46 @@
                         </tr>
                     </tbody>
                 </table>
-                <ngb-pagination [collectionSize]="settings.length" 
-                    [(page)]="page" 
-                    [maxSize]="5" 
-                    [rotate]="true" 
-                    [ellipses]="false" 
-                    [boundaryLinks]="true">
-                </ngb-pagination>
             </div>
         </div>
+        <div class="d-md-none d-block margin-bottom-small">
+            <ngb-accordion [closeOthers]="true" [destroyOnHide]='false'>
+                <ngb-panel [id]="setting.key"
+                    *ngFor="let setting of settings | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i=index;">
+                    <ng-template ngbPanelTitle ngbPanelToggle>
+                        {{setting.label}}
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                        <table class="table">
+                            <tr>
+                                <td>Key</td>
+                                <td>{{setting.key}}</td>
+                            </tr>
+                            <tr>
+                                <td>Value</td>
+                                <td>{{setting.value}}</td>
+                            </tr>
+                        </table>
+                        <div class="actions text-right">
+                            <button class="btn btn-primary" (click)="openEditModal(setting)">
+                                <fa-icon [icon]="faPencil"></fa-icon>
+                            </button>
+                            <button class="btn btn-danger" 
+                                [disabled]="!setting.deletable"
+                                (click)="remove(setting)">
+                                <fa-icon [icon]="faTrash"></fa-icon>
+                            </button>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </div>
+        <ngb-pagination [collectionSize]="settings.length" 
+            [(page)]="page" 
+            [maxSize]="5" 
+            [rotate]="true" 
+            [ellipses]="false" 
+            [boundaryLinks]="true">
+        </ngb-pagination>
     </div>
 </div>
