@@ -1,0 +1,4 @@
+include LICENSE
+include README.rst
+recursive-include sitemonitor/static *
+recursive-include sitemonitor/templates *
